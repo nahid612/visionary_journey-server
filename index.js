@@ -29,25 +29,35 @@ async function run() {
 
     const spotCollection = client.db('spotDB').collection('place')
 
-    // app.get('/myAddList/:email', async(req, res) =>{
-    //   console.log(req.params.email)
-    //   const cursor = spotCollection.find({email: req.params.email})
-    //   const result = await cursor.toArray()
-    //   res.send(result)
-    // })
-
-    app.get('/myAddList', async(req, res)=>{
-      const cursor = spotCollection.find()
-      const result = await cursor.toArray()
-      res.send(result)
-    })
-
     app.post('/addTouristSpot', async(req, res) =>{
       const info = req.body
       console.log(info)
       const result = await spotCollection.insertOne(info)
       res.send(result)
     })
+
+    app.get('/allTouristspot', async(req, res)=>{
+      const cursor = spotCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+
+    
+
+    app.get('/myAddList/:email', async(req, res) =>{
+      console.log(req.params.email)
+      const cursor = spotCollection.find({email: req.params.email})
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+
+
+
+    
+
+    
 
 
     // Send a ping to confirm a successful connection
