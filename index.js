@@ -56,6 +56,14 @@ async function run() {
       res.send(result)
     })
 
+
+    app.get('/viewDetails/:id', async(req, res) =>{
+      console.log(req.params.id)
+      const result = await spotCollection.findOne({_id: new ObjectId (req.params.id)})
+      console.log(result)
+      res.send(result)
+    })
+
     // update
     app.put('/updatePlace/:id', async(req, res) =>{
       console.log(req.params.id)
