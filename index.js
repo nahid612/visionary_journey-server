@@ -56,7 +56,7 @@ async function run() {
       res.send(result)
     })
 
-
+    // view data with get
     app.get('/viewDetails/:id', async(req, res) =>{
       console.log(req.params.id)
       const result = await spotCollection.findOne({_id: new ObjectId (req.params.id)})
@@ -99,9 +99,6 @@ async function run() {
 
 
     
-
-    
-
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
