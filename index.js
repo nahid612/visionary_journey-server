@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = process.env.PORT || 5000;
 
@@ -42,9 +42,6 @@ async function run() {
       res.send(result)
     })
 
-
-    
-
     app.get('/myAddList/:email', async(req, res) =>{
       console.log(req.params.email)
       const cursor = spotCollection.find({email: req.params.email})
@@ -52,7 +49,45 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/singlePlace/:id', async(req, res) =>{
+      console.log(req.params.id)
+      const result = await spotCollection.findOne({_id: new ObjectId (req.params.id)})
+      console.log(result)
+      res.send(result)
+    })
 
+    // update
+    app.put('/updatePlace/:id', async(req, res) =>{
+      console.log(req.params.id)
+      const query = {_id: new ObjectId(req.params.id)}
+      const updatePlace = req.body
+      const data = {
+        $set:{
+          image: updatePlace.image,
+          touristSpot: updatePlace.touristSpot,
+          countryName: updatePlace.countryName,
+          location: updatePlace.location,
+          description: updatePlace.description,
+          cost: updatePlace.cost,
+          season: updatePlace.season,
+          travelTime: updatePlace.travelTime,
+          visitor: updatePlace.visitor,
+        }
+      }
+      const result = await spotCollection.updateOne(query,data)
+      console.log(result)
+      res.send(result)
+    })
+
+
+     // delate
+     app.delete("/delatePlace/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await spotCollection.deleteOne(query);
+      console.log(result)
+      res.send(result);
+    });
 
 
     
